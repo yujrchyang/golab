@@ -2,6 +2,8 @@ package data
 
 import "github.com/yujrchyang/golab/bitcask/fio"
 
+const DataFileNameSuffix = ".data"
+
 // 数据文件
 type DataFile struct {
 	FileId    uint32        // 文件 id
@@ -14,8 +16,8 @@ func OpenDataFile(dirPath string, fileId uint32) (*DataFile, error) {
 	return nil, nil
 }
 
-func (df *DataFile) ReadLogRecord(offset uint64) (*LogRecord, error) {
-	return nil, nil
+func (df *DataFile) ReadLogRecord(offset uint64) (*LogRecord, uint64, error) {
+	return nil, 0, nil
 }
 
 func (df *DataFile) Write(buf []byte) error {

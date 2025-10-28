@@ -9,4 +9,14 @@ type Options struct {
 
 	// 每次写数据是否持久化
 	SyncWrite bool
+
+	// 索引类型
+	IndexType IndexerType
 }
+
+type IndexerType = int8
+
+const (
+	BTree IndexerType = iota + 1
+	ART
+)
