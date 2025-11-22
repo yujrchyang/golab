@@ -19,8 +19,8 @@ func TestBTeee_PGD(t *testing.T) {
 	assert.True(t, res)
 
 	rv := bt.Get([]byte("a"))
-	assert.Equal(t, uint32(1), rv.Fid)
-	assert.Equal(t, uint64(300), rv.Offset)
+	assert.Equal(t, int32(1), rv.Fid)
+	assert.Equal(t, int64(300), rv.Offset)
 
 	res = bt.Delete([]byte("a"))
 	assert.True(t, res)

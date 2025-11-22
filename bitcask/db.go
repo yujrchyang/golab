@@ -17,10 +17,10 @@ import (
 type DB struct {
 	options    Options
 	mu         *sync.RWMutex
-	index      index.Indexer             // 内存索引
-	fileIds    []int                     // 文件 id，只能在加载索引时使用
-	activeFile *data.DataFile            // 当前活跃数据文件，可以用于写入
-	olderFiles map[uint32]*data.DataFile // 旧的数据文件，只能用于读取
+	index      index.Indexer            // 内存索引
+	fileIds    []int                    // 文件 id，只能在加载索引时使用
+	activeFile *data.DataFile           // 当前活跃数据文件，可以用于写入
+	olderFiles map[int32]*data.DataFile // 旧的数据文件，只能用于读取
 }
 
 // 打开 bitcask 存储引擎实例
@@ -41,7 +41,7 @@ func Open(options Options) (*DB, error) {
 	db := &DB{
 		options:    options,
 		mu:         new(sync.RWMutex),
-		olderFiles: make(map[uint32]*data.DataFile),
+		olderFiles: make(map[int32]*data.DataFile),
 		index:      index.NewIndexer(options.IndexType),
 	}
 
@@ -205,7 +205,7 @@ func (db *DB) appendLogRecord(logRecord *data.LogRecord) (*data.LogRecordPos, er
 // 设置当前活跃文件
 // 在访问此方法前必须持有互斥锁
 func (db *DB) setActiveDataFile() error {
-	var initialFileId uint32 = 0
+	var initialFileId int32 = 0
 	if db.activeFile != nil {
 		initialFileId = db.activeFile.FileId + 1
 	}
@@ -246,7 +246,7 @@ func (db *DB) loadDataFiles() error {
 
 	// 遍历每个文件 ID，打开对应的数据文件
 	for i, fid := range fileIds {
-		dataFile, err := data.OpenDataFile(db.options.DirPath, uint32(fid))
+		dataFile, err := data.OpenDataFile(db.options.DirPath, int32(fid))
 		if err != nil {
 			return err
 		}
@@ -255,7 +255,7 @@ func (db *DB) loadDataFiles() error {
 		if i == len(fileIds)-1 {
 			db.activeFile = dataFile
 		} else {
-			db.olderFiles[uint32(fid)] = dataFile
+			db.olderFiles[int32(fid)] = dataFile
 		}
 	}
 
@@ -273,14 +273,14 @@ func (db *DB) loadIndexFromDataFiles() error {
 	// 遍历所有的文件 id，处理文件中的记录
 	for i, fid := range db.fileIds {
 		var dataFile *data.DataFile
-		fileId := uint32(fid)
+		fileId := int32(fid)
 		if fileId == db.activeFile.FileId {
 			dataFile = db.activeFile
 		} else {
 			dataFile = db.olderFiles[fileId]
 		}
 
-		var offset uint64 = 0
+		var offset int64 = 0
 		for {
 			logRecord, size, err := dataFile.ReadLogRecord(offset)
 			if err != nil {
