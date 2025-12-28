@@ -9,13 +9,13 @@ import (
 )
 
 func TestNewFileIOManager(t *testing.T) {
-	fio, err := NewFileIOManager(filepath.Join("/tmp/bitcask", "a.data"))
+	fio, err := NewFileIOManager(filepath.Join("/tmp", "a.data"))
 	assert.NotNil(t, fio)
 	assert.Nil(t, err)
 }
 
 func TestFileIO_Write(t *testing.T) {
-	path := filepath.Join("/tmp/bitcask", "a.data")
+	path := filepath.Join("/tmp", "a.data")
 
 	fio, err := NewFileIOManager(path)
 	assert.NotNil(t, fio)
@@ -33,7 +33,7 @@ func TestFileIO_Write(t *testing.T) {
 }
 
 func TestFileIO_Read(t *testing.T) {
-	path := filepath.Join("/tmp/bitcask", "a.data")
+	path := filepath.Join("/tmp", "a.data")
 
 	fio, err := NewFileIOManager(path)
 	assert.NotNil(t, fio)
@@ -63,7 +63,7 @@ func TestFileIO_Read(t *testing.T) {
 }
 
 func TestFileIO_Sync(t *testing.T) {
-	path := filepath.Join("/tmp/bitcask", "a.data")
+	path := filepath.Join("/tmp", "a.data")
 
 	fio, err := NewFileIOManager(path)
 	assert.NotNil(t, fio)
@@ -80,7 +80,7 @@ func TestFileIO_Sync(t *testing.T) {
 }
 
 func TestFileIO_Close(t *testing.T) {
-	path := filepath.Join("/tmp/bitcask", "a.data")
+	path := filepath.Join("/tmp", "a.data")
 
 	fio, err := NewFileIOManager(path)
 	assert.NotNil(t, fio)
