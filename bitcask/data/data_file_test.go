@@ -10,7 +10,7 @@ import (
 )
 
 func TestOpenDataFile(t *testing.T) {
-	dbDir := "/tmp/bitcask"
+	dbDir := "/tmp"
 
 	fileID := int32(0)
 	dataFile1, err := OpenDataFile(dbDir, fileID)
@@ -31,7 +31,7 @@ func TestOpenDataFile(t *testing.T) {
 }
 
 func TestDataFile_Write(t *testing.T) {
-	dbDir := "/tmp/bitcask"
+	dbDir := "/tmp"
 
 	fileID := int32(0)
 	dataFile, err := OpenDataFile(dbDir, fileID)
@@ -45,7 +45,7 @@ func TestDataFile_Write(t *testing.T) {
 }
 
 func TestDataFile_Close(t *testing.T) {
-	dbDir := "/tmp/bitcask"
+	dbDir := "/tmp"
 
 	fileID := int32(0)
 	dataFile, err := OpenDataFile(dbDir, fileID)
@@ -62,7 +62,7 @@ func TestDataFile_Close(t *testing.T) {
 }
 
 func TestDataFile_Sync(t *testing.T) {
-	dbDir := "/tmp/bitcask"
+	dbDir := "/tmp"
 
 	fileID := int32(0)
 	dataFile, err := OpenDataFile(dbDir, fileID)
@@ -82,7 +82,7 @@ func TestDataFile_Sync(t *testing.T) {
 }
 
 func TestDataFile_ReadLogRecord(t *testing.T) {
-	dbDir := "/tmp/bitcask"
+	dbDir := "/tmp"
 
 	fileID := int32(0)
 	dataFile, err := OpenDataFile(dbDir, fileID)
